@@ -1,9 +1,9 @@
 //import Tile from './components/Tile'
-import Board from './components/Board'
+import Chessmith from './components/Chessmith'
 
 const App = () => {
   return (
-    <Board />
+    <Chessmith />
   )
 }
 

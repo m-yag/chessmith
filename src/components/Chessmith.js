@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './main.css'
 import Tile from './Tile'
 
-const Board = () => {
+const Chessmith = () => {
   // Square dimension of the board
   const boardDimension = 5
 
@@ -114,4 +114,4 @@ const Board = () => {
   )
 }
 
-export default Board
+export default Chessmith
