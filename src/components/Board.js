@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-
+import './main.css'
 import Tile from './Tile'
 
 const Board = () => {
