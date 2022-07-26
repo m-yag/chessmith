@@ -6,13 +6,18 @@ const Board = () => {
   // Square dimension of the board
   const boardDimension = 5
 
+  // States
+  /*********************************************/
   const [activeTiles, setActiveTiles] = useState( () => {
-    // start with a 2d array populated with 'true'
     return Array(boardDimension).fill(null).map(() => Array(boardDimension).fill(true))
   })
   const [strikeCounter, setStrikeCounter] = useState( () => {
     return Array(boardDimension).fill(null).map(() => Array(boardDimension).fill(0))
   })
+  const [gameOver, setGameOver] = useState(false)
+  const [score, setScore] = useState(0)
+  /*********************************************/
+
 
   // Testing board
   const layerOne = Array(boardDimension).fill(null).map(() => Array(boardDimension).fill(1))
@@ -20,31 +25,44 @@ const Board = () => {
   // Tile Movement Functions
   /*********************************************/
   const oneTileMovement = (i, j) => {
+    var activeTileCount = 0
+
     var newTileStatus = Array(boardDimension).fill(null).map(() => Array(boardDimension).fill(false))
     if(j - 1 >= 0) {  // left tile
+      if(strikeCounter[i][j-1] < 3) activeTileCount++
       newTileStatus[i][j-1] = true
     }
     if(j + 1 < boardDimension) {  // right tile
+      if(strikeCounter[i][j+1] < 3) activeTileCount++
       newTileStatus[i][j+1] = true
     }
     if(i - 1 >= 0) {  // upper row
+      if(strikeCounter[i-1][j] < 3) activeTileCount++
       newTileStatus[i-1][j] = true
       if(j - 1 >= 0) {
+        if(strikeCounter[i-1][j-1] < 3) activeTileCount++
         newTileStatus[i-1][j-1] = true
       }
       if(j + 1 < boardDimension) {
+        if(strikeCounter[i-1][j+1] < 3) activeTileCount++
         newTileStatus[i-1][j+1] = true
       }
     }
     if(i + 1 < boardDimension) {  // lower row
+      if(strikeCounter[i+1][j] < 3) activeTileCount++
       newTileStatus[i+1][j] = true
       if(j - 1 >= 0) {
+        if(strikeCounter[i+1][j-1] < 3) activeTileCount++
         newTileStatus[i+1][j-1] = true
       }
       if(j + 1 < boardDimension) {
+        if(strikeCounter[i+1][j+1] < 3) activeTileCount++
         newTileStatus[i+1][j+1] = true
       }
     }
+
+    if(activeTileCount === 0) setGameOver(true)
+
     setActiveTiles(newTileStatus)
   }
 
@@ -58,6 +76,7 @@ const Board = () => {
 
   const tileClick = (type, i, j) => {
     incrementStrike(i, j)
+    setScore(score + 1)
     if(type === 1) {
       oneTileMovement(i, j)
     }
@@ -83,8 +102,14 @@ const Board = () => {
   }
 
   return (
-    <div className="grid" style={gridStyle}>
-      {tileList}
+    <div>
+      <div className="grid" style={gridStyle}>
+        {tileList}
+      </div>
+      <br/>
+      <div>
+        {gameOver ? `Game Over! Score: ${score}` : `Score: ${score}`}
+      </div>
     </div>
   )
 }
